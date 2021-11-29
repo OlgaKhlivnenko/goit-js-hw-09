@@ -1,4 +1,4 @@
-
+import '../css/common.css';
 const bodyEl = document.querySelector('body');
 
 const btnStart = document.querySelector('button[data-start]');
@@ -25,4 +25,5 @@ btnStop.addEventListener(`click`, onStopChangeColor);
 
 function onStopChangeColor() {
     clearInterval(timeoutId);
+    console.log(`Stop`);
 }
