@@ -6,7 +6,7 @@ const btnStop = document.querySelector('button[data-stop]');
 let timeoutId = null;
 
 function getRandomHexColor() {
-  return console.log(`#${Math.floor(Math.random() * 16777215).toString(16)}`);
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 }
 
 btnStart.addEventListener(`click`, onChangeColor);
@@ -16,8 +16,7 @@ function onChangeColor(evt) {
     timeoutId = setInterval(() => {
         const colorChange = getRandomHexColor();
         bodyEl.style.backgroundColor = colorChange;
-        console.log(`dct hf,jnftn`)
-        btnStart.classList.add(`disabled`);
+        btnStart.setAttribute(`disabled`, true);
     }, 1000);
 }
 
@@ -25,5 +24,5 @@ btnStop.addEventListener(`click`, onStopChangeColor);
 
 function onStopChangeColor() {
     clearInterval(timeoutId);
-    console.log(`Stop`);
+    btnStart.removeAttribute(`disabled`, true);
 }

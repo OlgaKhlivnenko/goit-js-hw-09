@@ -1,26 +1,46 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
 const inputEl = document.querySelector(`input#datetime-picker`);
 const btnStart = document.querySelector('button[data-start]');
-const timerEl = document.querySelector('.timer');
+const daysFace = document.querySelector('span[data-days]');
+const hoursFace = document.querySelector('span[data-hours]');
+const minutesFace = document.querySelector('span[data-minutes]');
+const secondsFace = document.querySelector('span[data-seconds]');
+const fp = flatpickr(inputEl, {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+    onClose(selectedDates) {
+      if (new Date(inputEl.value).getTime() < Date.now()) {
+       return Notiflix.Report.warning('Warning', "Please choose a date in the future");
+      }
+  },
+});
 
-
-btnStart.addEventListener(`click`, onStartTime);
-function onStartTime() {
-  console.log(`click start`);
-  const startTime = Date.now();
-  console.log(startTime);
+const timer = {
+  start() {
+    const date = new Date(inputEl.value);
+    const selectedDates = date.getTime();
     setInterval(() => {
       const currentTime = Date.now();
-      const ms = startTime - currentTime;
-     
-      const { days, hours, minutes, seconds } = convertMs(ms);
-       console.log(`${days}::${hours}::${minutes}::${seconds}`);
+      const deltaTime = selectedDates - currentTime;
+      const time = convertMs(deltaTime);
+      updateClockFace(time);
     }, 1000);
+  },
+};
+
+function updateClockFace({ days, hours, minutes, seconds }) {
+  daysFace.textContent = `${days}`;
+  hoursFace.textContent = `${hours}`;
+  minutesFace.textContent = `${minutes}`;
+  secondsFace.textContent = `${seconds}`;
 }
-function addLeadingZero(value){
-  return String(value).padStart(2, `0`);
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
 }
 
 function convertMs(ms) {
@@ -41,45 +61,11 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-function addLeadingZero(value){
-  return String(value).padStart(2, `0`);
+
+btnStart.addEventListener(`click`, (onStartTime));
+
+function onStartTime() {
+  timer.start();
+  btnStart.setAttribute(`disabled`, true);
 }
 
-// const date = Date.now();
-// console.log(date);
-// const fp = flatpickr(inputEl, {
-//   enableTime: true,
-//   time_24hr: true,
-//   defaultDate: new Date(),
-//   minuteIncrement: 1,
-//     onClose(selectedDates) {
-//     console.log(selectedDates[0]);
-//     if(selectedDates < date){
-//       window.alert("Please choose a date in the future")
-//     }
-//   },
-// });
-// btnStart.addEventListener(`click`, onStartTime);
-
-
-    
-// console.log(fp);
-// }
-// // const options = {
-// //   enableTime: true,
-// //   time_24hr: true,
-// //   defaultDate: new Date(),
-// //   minuteIncrement: 1,
-// //     onClose() {
-     
-// //     console.log(selectedDates[0]);
-// //   },
-// // };
-
-
-
-
-
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
