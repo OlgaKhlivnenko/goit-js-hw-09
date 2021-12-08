@@ -20,24 +20,26 @@ const fp = flatpickr(inputEl, {
   },
 });
 
-const timer = {
-  start() {
+function startTimer() {
     const date = new Date(inputEl.value);
     const selectedDates = date.getTime();
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       const currentTime = Date.now();
       const deltaTime = selectedDates - currentTime;
       const time = convertMs(deltaTime);
+
       updateClockFace(time);
     }, 1000);
-  },
+
 };
 
 function updateClockFace({ days, hours, minutes, seconds }) {
+   
   daysFace.textContent = `${days}`;
   hoursFace.textContent = `${hours}`;
   minutesFace.textContent = `${minutes}`;
   secondsFace.textContent = `${seconds}`;
+ 
 }
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
@@ -65,7 +67,8 @@ function convertMs(ms) {
 btnStart.addEventListener(`click`, (onStartTime));
 
 function onStartTime() {
-  timer.start();
+  startTimer();
   btnStart.setAttribute(`disabled`, true);
+  
 }
 
