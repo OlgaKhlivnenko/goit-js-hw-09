@@ -23,14 +23,19 @@ const fp = flatpickr(inputEl, {
 function startTimer() {
     const date = new Date(inputEl.value);
     const selectedDates = date.getTime();
-    const intervalId = setInterval(() => {
+  const intervalId = setInterval(() => {
+      
       const currentTime = Date.now();
       const deltaTime = selectedDates - currentTime;
+    if (deltaTime >= 0) {
       const time = convertMs(deltaTime);
-
       updateClockFace(time);
+    }
+    else {
+      clearInterval(intervalId);
+      btnStart.setAttribute(`disabled`, false);
+      } 
     }, 1000);
-
 };
 
 function updateClockFace({ days, hours, minutes, seconds }) {
@@ -71,4 +76,3 @@ function onStartTime() {
   btnStart.setAttribute(`disabled`, true);
   
 }
-

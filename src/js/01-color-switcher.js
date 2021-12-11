@@ -13,10 +13,11 @@ btnStart.addEventListener(`click`, onChangeColor);
 
 function onChangeColor(evt) {
     console.log(evt);
+    btnStart.setAttribute(`disabled`, true);
     timeoutId = setInterval(() => {
         const colorChange = getRandomHexColor();
         bodyEl.style.backgroundColor = colorChange;
-        btnStart.setAttribute(`disabled`, true);
+        
     }, 1000);
 }
 
